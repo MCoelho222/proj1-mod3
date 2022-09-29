@@ -38,13 +38,13 @@ class CreateUserBodySchema(Schema):
 
     @validates('phone')
     def validate_phone(self, phone):
-        if not phone.isnumeric() or len(phone) != 8:
-            raise ValidationError('O telefone não é válido.')
+        if not phone.isnumeric() or len(phone) != 11:
+            raise ValidationError('Invalid phone number.')
 
     @validates('cep')
     def validate_cep(self, cep):
         if not cep.isnumeric() or len(cep) != 8:
-            raise ValidationError('O cep não é válido.')
+            raise ValidationError('The CEP is invalid.')
 
 
 class UpdateUserBodySchema(Schema):

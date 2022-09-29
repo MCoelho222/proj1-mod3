@@ -105,13 +105,15 @@ def test_create_user_invalid_field(client, logged_in_client):
     data = {
         "name": "Marcelo Coelho",
         "email": "mcoelhohotmail.com",
-        "password": "12345678"
+        "password": "12345678",
+        "phone": "4199216640"
     }
 
     response = client.post(url, data=json.dumps(data), headers=headers)
 
     assert response.json['email'] == ['Invalid email.']
     assert response.json['password'] == ['Your password must have more 8 characters or more, and at least 1 special character.']
+    assert response.json['phone'] == ['Invalid phone number.']
     assert response.status_code == 400
 
 
