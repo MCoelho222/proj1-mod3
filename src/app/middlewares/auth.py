@@ -18,10 +18,10 @@ def requires_access_level(permissions):
                 token = request.headers["Authorization"]
 
             if not token:
-                return jsonify({"error": "Você não tem permissão"}), 403
+                return jsonify({"error": "You don't have permission."}), 403
 
             if not "Bearer" in token:
-                return jsonify({"error": "Você não tem permissão"}), 401
+                return jsonify({"error": "You must be authenticated."}), 401
 
             try:
                 token_pure = token.replace("Bearer ", "")
@@ -31,7 +31,7 @@ def requires_access_level(permissions):
                 current_user = User.query.get(decoded['user_id'])
 
             except Exception:
-                return jsonify({"error": "O Token é inválido"}), 403
+                return jsonify({"error": "Invalid token."}), 403
 
             current_role = Role.query.get(current_user.role.id)
             role_permissions = role_share_schema.dump(current_role)['permissions']
@@ -41,7 +41,7 @@ def requires_access_level(permissions):
             if len(roles) < len(permissions):
                 return jsonify({
                     "error":
-                    "Você não tem permissão para essa funcionalidade"
+                    "You don't have permission on this functionality."
                 }), 403
 
             return function_current(*args, **kwargs)

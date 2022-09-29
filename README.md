@@ -169,6 +169,10 @@ poetry run flask populate_db
 - O telefone deve conter 11 dígitos e não pode conter nenhuma letra ou caracter especial.
 - Ao criar o usuário, deve-se retornar o Status 201 (Created)
 
+#### Testes
+
+ - 
+
 ### Regras ENDPOINT 5:
 
 - O usuário deve estar logado e possuir autorização READ para este endpoint de usuário. Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
