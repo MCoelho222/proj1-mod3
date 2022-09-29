@@ -115,7 +115,27 @@ Para ter alguns dados no banco e manipulá-los:
 ```
 poetry run flask populate_db
 ```
-`OBS`: Caso precise, pode utilizar o comando **_poetry run flask drop_all_tables_** para retirar todas as tabelas do banco e recomeçar novamente (não sendo necessário o comando 'poetry run flask db init'). 
+`OBS`: Caso precise, pode utilizar o comando **_poetry run flask drop_all_tables_** para retirar todas as tabelas do banco e recomeçar novamente (não sendo necessário o comando 'poetry run flask db init').
+
+## Testes
+
+- No arquivo *.env* definir a variável de ambiente FLASK_ENV:
+
+```
+FLASK_ENV = 'testing'
+```
+
+- criar database no gerenciador: nomequalquer-testing;
+- rodar os comandos anteriores para popular a database;
+- redefinir e rodar os testes:
+
+```
+FLASK_ENV = 'development'
+```
+```
+pytest tests/ -v -W ignore::DeprecationWarning
+```
+
 
 ## Endpoints
 1. `[POST] /user/login (users)` - [Regras endpoint 1](#regras-endpoint-1)
@@ -171,7 +191,11 @@ poetry run flask populate_db
 
 #### Testes
 
- - 
+ - test_create_user_unauthorized;
+ - test_create_user_missing_field;
+ - test_create_user_email_exists;
+ - test_create_user_invalid_field;
+ - test_create_user_success.
 
 ### Regras ENDPOINT 5:
 

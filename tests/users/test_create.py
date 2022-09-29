@@ -4,34 +4,6 @@ from flask import json
 mimetype = 'application/json'
 url = "/user/create"
 
-def test_create_user_succes(client, logged_in_client):
-
-    headers = {
-        'Content-Type': mimetype,
-        'Accept': mimetype
-    }
-
-    headers['Authorization'] = f"Bearer {logged_in_client}"
-
-    data = {
-        "name": "Marcelo Coelho",
-        "email": "mcoelho2011@hotmail.com",
-        "password": "mc5447#@T"
-    }
-   
-    response = client.post(url, data=json.dumps(data), headers=headers)
-
-    user = {
-        "email": "mcoelho2011@hotmail.com",
-        "password": "mc5447#@T"
-    }
-
-    login_response = client.post('/user/login', data=json.dumps(user), headers=headers)
-
-    assert response.status_code == 201
-    assert response.json['message'] == "User created with success."
-    assert login_response.status_code == 200
-
 def test_create_user_unauthorized(client, logged_in_client):
 
     headers = {
@@ -70,6 +42,35 @@ def test_create_user_unauthorized(client, logged_in_client):
 
     assert response.json['error'] == "You don't have permission on this functionality."
     assert response.status_code == 403
+
+def test_create_user_success(client, logged_in_client):
+
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+
+    headers['Authorization'] = f"Bearer {logged_in_client}"
+
+    data = {
+        "name": "Marcelo Coelho",
+        "email": "mcoelho2011@hotmail.com",
+        "password": "mc5447#@T"
+    }
+   
+    response = client.post(url, data=json.dumps(data), headers=headers)
+
+    user = {
+        "email": "mcoelho2011@hotmail.com",
+        "password": "mc5447#@T"
+    }
+
+    login_response = client.post('/user/login', data=json.dumps(user), headers=headers)
+
+    assert response.status_code == 201
+    assert response.json['message'] == "User created with success."
+    assert login_response.status_code == 200
+
 
 
 def test_create_user_missing_field(client, logged_in_client):
