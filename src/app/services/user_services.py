@@ -4,9 +4,8 @@ from src.app.models.user import User, user_share_schema, users_roles_share_schem
 from src.app.utils import generate_jwt
 
 
-def create_user(gender_id, city_id, role_id, name, age, email,\
-    phone, password, cep,\
-    district, street, number_street, complement=None, landmark=None):
+def create_user(name, email, password, gender_id=None, city_id=None, role_id=None, age=None,\
+    phone=None, cep=None, district=None, street=None, number_street=None, complement=None, landmark=None):
 
     try:
         User.seed(
