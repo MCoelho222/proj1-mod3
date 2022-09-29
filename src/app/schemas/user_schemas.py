@@ -3,11 +3,8 @@ from src.app.utils.error_messages import handle_error_messages
 
 
 def validate_password(password):
-    if len(password) < 8:
-        raise ValidationError('A senha precisa ser maior ou igual a 8.')
-
-    if password.isalnum():
-        raise ValidationError('A precisa ter pelo menos 1 caracter especial.')
+    if len(password) < 8 or password.isalnum():
+        raise ValidationError('Your password must have more 8 characters or more, and at least 1 special character.')
 
 
 class LoginBodySchema(Schema):

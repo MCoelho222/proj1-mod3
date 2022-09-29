@@ -94,6 +94,7 @@ def post_create_users(body):
     response = create_user(**body)
 
     if "error" in response:
+        
         return jsonify(response), 400
 
     return jsonify(response), 201

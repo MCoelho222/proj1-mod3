@@ -25,10 +25,10 @@ def create_user(name, email, password, gender_id=None, city_id=None, role_id=Non
             landmark=landmark
         )
 
-        return {"message": "Usuário criado com sucesso."}
+        return {"message": "User created with success."}
 
     except:
-        return {"error": "Erro na criação de Usuário. Email já existe."}
+        return {"error": "User not created. Email already exists."}
 
 
 def make_login(email, password):
