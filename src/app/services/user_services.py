@@ -6,7 +6,7 @@ from src.app.utils import generate_jwt
 
 def create_user(name, email, password, gender_id=None, city_id=None, role_id=None, age=None,\
     phone=None, cep=None, district=None, street=None, number_street=None, complement=None, landmark=None):
-
+    print('CREATE USER HAHA')
     try:
         User.seed(
             gender_id=gender_id, 

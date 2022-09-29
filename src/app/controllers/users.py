@@ -75,13 +75,12 @@ def update_user(id, body):
 @requires_access_level(['READ', 'WRITE', 'UPDATE', 'DELETE'])
 @validate_body(user_schemas.CreateUserBodySchema())
 def post_create_users(body):
-
+    
     models = [
             {'model': Gender, 'id': body['gender_id']}, 
             {'model': City,'id': body['city_id']},
             {'model': Role, 'id':body['role_id']}
         ]
-
     if not all([check_existence(model['model'], model['id'])for model in models]):
         return jsonify({'error': 'Algum dos IDs não foi encontrado.'}), 404
 
