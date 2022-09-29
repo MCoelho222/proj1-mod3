@@ -76,13 +76,20 @@ def update_user(id, body):
 @validate_body(user_schemas.CreateUserBodySchema())
 def post_create_users(body):
     
-    models = [
-            {'model': Gender, 'id': body['gender_id']}, 
-            {'model': City,'id': body['city_id']},
-            {'model': Role, 'id':body['role_id']}
-        ]
-    if not all([check_existence(model['model'], model['id'])for model in models]):
-        return jsonify({'error': 'Algum dos IDs não foi encontrado.'}), 404
+    models =[Gender, City, Role]
+    ids = ['gender_id', 'city_id', 'role_id']
+    check_ids = []
+    for i in range(len(ids)):
+        try:
+            check_dict = {'model': models[i], 'id': body[ids[i]]}
+            check_ids.append(check_dict)
+        except KeyError:
+            continue
+    
+    if len(check_ids) > 0:
+        if not all([check_existence(model['model'], model['id'])for model in check_ids]):
+            return jsonify({'error': 'Algum dos IDs não foi encontrado.'}), 404
+    
 
     response = create_user(**body)
 

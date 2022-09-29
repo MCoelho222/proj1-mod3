@@ -18,7 +18,7 @@ def test_create_user_succes(client, logged_in_client):
         "email": "mcoelho2011@hotmail.com",
         "password": "mc5447#@T"
     }
-    print('SASASASA')
+   
     response = client.post(url, data=json.dumps(user), headers=headers)
     print(response)
     assert response == 201
