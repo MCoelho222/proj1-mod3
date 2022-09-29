@@ -1,4 +1,3 @@
-from src.app.models.user import User
 from flask import json
 
 mimetype = 'application/json'

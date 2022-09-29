@@ -33,7 +33,14 @@ def requires_access_level(permissions):
             except Exception:
                 return jsonify({"error": "Invalid token."}), 403
 
-            current_role = Role.query.get(current_user.role.id)
+            try:
+                current_role = Role.query.get(current_user.role.id)
+            except AttributeError:
+                return jsonify({
+                    "error":
+                    "You don't have permission on this functionality."
+                }), 403
+
             role_permissions = role_share_schema.dump(current_role)['permissions']
 
             roles = [permission['description'] for permission in role_permissions if permission['description']  in permissions]
