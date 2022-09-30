@@ -1,5 +1,4 @@
 from flask import json
-import math as ma
 
 
 mimetype = 'application/json'

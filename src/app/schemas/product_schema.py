@@ -21,7 +21,17 @@ class ProductBodySchema(Schema):
     @validates('product_code')
     def validate_product_code(self, product_code):
         if len(str(product_code)) > 8 or product_code <= 0:
-            raise ValidationError('O código do produto deve ser maior que 0 com no máximo 8 dígitos.')
+            raise ValidationError('Product code must have from 1 to maximum 8 characters and must be positive.')
+
+    @validates('value')
+    def validate_value(self, value):
+        if value <= 0.:
+            raise ValidationError('Value must be higher than zero.')
+    
+    @validates('brand')
+    def validate_brand(self, brand):
+        if len(brand) == 0:
+            raise ValidationError('Brand field cannot be empty.')
 
 
 class UpdateProductBodySchema(Schema):

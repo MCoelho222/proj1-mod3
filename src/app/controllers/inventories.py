@@ -44,10 +44,10 @@ def list_all_requirements():
 def create(body):
 
     if exist_product_code(body['product_code']):
-        return jsonify({"error": "Esse código de produto já existe"}), 400
+        return jsonify({"error": "Product code already exists."}), 400
 
-    if not body["value"]:
-        return jsonify({"error": "O valor não pode ser menor ou igual a zero"}), 400
+    if not body["value"] or body["value"] <= 0:
+        return jsonify({"error": "The price must be higher than zero."}), 400
 
     response = create_product(**body)
 

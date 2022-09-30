@@ -31,6 +31,7 @@ def requires_access_level(permissions):
                 current_user = User.query.get(decoded['user_id'])
 
             except Exception:
+                
                 return jsonify({"error": "Invalid token."}), 403
 
             try:

@@ -15,10 +15,10 @@ def create_product(product_category_id, product_code, title, value,brand, templa
             description = description
         )
 
-        return ({'message': 'Item cadastrado com sucesso'})
+        return ({"message": "Item successfully registered."})
     
     except:
-        return ({'error': 'Erro ao cadastrar item'})
+        return ({"error": "Something went wrong..."})
 
 
 def generate_user_data(user_id):

@@ -288,6 +288,17 @@ Se não, irá dar NO CONTENT 204
 }
 ```
 
+#### Testes
+
+- test_create_item_no_auth;
+- test_create_item_success;
+- test_create_item_no_permission;
+- test_create_item_missing_field;
+- test_create_item_invalid_field;
+- test_create_item_short_prod_code;
+- test_create_item_negative_prod_code;
+- test_create_item_prod_code_exists.
+
 ### Regras ENDPOINT 8:
 
 - O usuário deve estar logado e possuir autorização UPDATE para este endpoint de usuário. Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
