@@ -1,7 +1,10 @@
 from flask import json
+import math as ma
+
 
 mimetype = 'application/json'
 url = "/user/"
+
 
 def test_get_user_unauthorized(client, logged_in_client):
 
@@ -9,7 +12,6 @@ def test_get_user_unauthorized(client, logged_in_client):
         'Content-Type': mimetype,
         'Accept': mimetype
     }
-
     headers['Authorization'] = f"Bearer {logged_in_client}"
 
     data = {
@@ -30,102 +32,89 @@ def test_get_user_unauthorized(client, logged_in_client):
     token = login_response.json['token']
     headers['Authorization'] = f"Bearer {token}"
 
-   
     response = client.get(url, headers=headers)
 
     assert response.json['error'] == "You don't have permission on this functionality."
     assert response.status_code == 403
 
-# def test_create_user_success(client, logged_in_client):
 
-#     headers = {
-#         'Content-Type': mimetype,
-#         'Accept': mimetype
-#     }
+def test_get_users_success(client, logged_in_client):
 
-#     headers['Authorization'] = f"Bearer {logged_in_client}"
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+    headers['Authorization'] = f"Bearer {logged_in_client}"
 
-#     data = {
-#         "name": "Marcelo Coelho",
-#         "email": "mcoelho2011@hotmail.com",
-#         "password": "mc5447#@T"
-#     }
+    name = 'Luis'
+    response = client.get(f"{url}?name={name}", headers=headers)
+    users_list = response.json
+    check = all([name in user['name'] for user in users_list])
+    
+    assert response.status_code == 200
+    assert check
+
+def test_get_specific_user_success(client, logged_in_client):
+
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+    headers['Authorization'] = f"Bearer {logged_in_client}"
+    
+    name = 'Luis Lopes'
+    response = client.get(f"{url}?name={name}", headers=headers)
+    users_list = response.json
+    check = all([name in user['name'] for user in users_list])
+    keys = ['id','name', 'email', 'phone', 'role_id']
+    check_keys = []
+    for user in users_list:
+        for key in keys:
+            check_keys.append()
+
+    assert response.status_code == 200
+    assert check
+
+def test_get_all_users_per_page(client, logged_in_client):
+
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+    headers['Authorization'] = f"Bearer {logged_in_client}"
+
+    response = client.get(url, headers=headers)
+
+    assert response.status_code == 200
+    assert len(response.json) == 20
+    
    
-#     response = client.post(url, data=json.dumps(data), headers=headers)
+def test_user_not_found(client, logged_in_client):
+    
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
 
-#     user = {
-#         "email": "mcoelho2011@hotmail.com",
-#         "password": "mc5447#@T"
-#     }
+    headers['Authorization'] = f"Bearer {logged_in_client}"
 
-#     login_response = client.post('/user/login', data=json.dumps(user), headers=headers)
+    response = client.get(f"{url}?name=4567", headers=headers)
 
-#     assert response.status_code == 201
-#     assert response.json['message'] == "User created with success."
-#     assert login_response.status_code == 200
+    assert response.status_code == 204
 
+def test_user_pagination(client, logged_in_client):
 
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
 
-# def test_create_user_missing_field(client, logged_in_client):
+    headers['Authorization'] = f"Bearer {logged_in_client}"
 
-#     headers = {
-#         'Content-Type': mimetype,
-#         'Accept': mimetype
-#     }
-
-#     headers['Authorization'] = f"Bearer {logged_in_client}"
-
-#     data = {
-#         "password": "mc5447#@T"
-#     }
-
-#     response = client.post(url, data=json.dumps(data), headers=headers)
-
-#     assert response.json['name'] == ['The field name is required.']
-#     assert response.json['email'] == ['The field email is required.']
-#     assert response.status_code == 400
-
-
-# def test_create_user_invalid_field(client, logged_in_client):
-
-#     headers = {
-#         'Content-Type': mimetype,
-#         'Accept': mimetype
-#     }
-
-#     headers['Authorization'] = f"Bearer {logged_in_client}"
-
-#     data = {
-#         "name": "Marcelo Coelho",
-#         "email": "mcoelhohotmail.com",
-#         "password": "12345678",
-#         "phone": "4199216640"
-#     }
-
-#     response = client.post(url, data=json.dumps(data), headers=headers)
-
-#     assert response.json['email'] == ['Invalid email.']
-#     assert response.json['password'] == ['Your password must have more 8 characters or more, and at least 1 special character.']
-#     assert response.json['phone'] == ['Invalid phone number.']
-#     assert response.status_code == 400
-
-
-# def test_create_user_email_exists(client, logged_in_client):
-
-#     headers = {
-#         'Content-Type': mimetype,
-#         'Accept': mimetype
-#     }
-
-#     headers['Authorization'] = f"Bearer {logged_in_client}"
-
-#     data = {
-#         "name": "Marcelo Coelho",
-#         "email": "luislopes@gmail.com",
-#         "password": "mc5447#@T"
-#     }
-
-#     response = client.post(url, data=json.dumps(data), headers=headers)
-
-#     assert response.json['error'] == "User not created. Email already exists."
-#     assert response.status_code == 400
+    response1 = client.get(f"{url}", headers=headers)
+    pages_float = len(response1.json)/20.
+    pages_round_up = ma.ceil(pages_float)
+    
+    response2 = client.get(f"{url}?page={pages_round_up}", headers=headers)
+    
+    assert len(response2.json) > 0

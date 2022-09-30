@@ -38,10 +38,8 @@ def list_user_per_page():
         list_name_user = get_users_by_name(name, page)
 
         if not list_name_user:
-            error = {
-                "Error": "Usuário não encontrado."
-            }
-            return jsonify(error), 204
+            
+            return jsonify({"error": "User not found."}), 204
 
         return jsonify(list_name_user), 200
 

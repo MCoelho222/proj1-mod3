@@ -139,7 +139,7 @@ def populate_db():
             description=item['description']
         )
 
-    users_data_request = requests.get('https://randomuser.me/api?nat=br&results=10')
+    users_data_request = requests.get('https://randomuser.me/api?nat=br&results=39')
 
     gender_description = {"male": "Masculino", "female" :"Feminino"}
 

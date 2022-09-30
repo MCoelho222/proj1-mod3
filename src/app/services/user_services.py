@@ -74,7 +74,8 @@ def get_user_by_email(email):
 
 
 def get_users_by_name(name, page=None):
-    result = User.query.filter(User.name.ilike(f"%{name}%")).paginate(per_page=3, page=page)
+    print(name)
+    result = User.query.filter(User.name.ilike(f"%{name}%")).paginate(per_page=20, page=page)
     users = users_roles_share_schema.dump(result.items)
         
     return users if result else None
