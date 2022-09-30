@@ -48,24 +48,25 @@ def list_user_per_page():
     return jsonify(list_users), 200
 
 
-@user.route("/<int:id>", methods = ['PATCH'])
+@user.route("/update/<int:id>", methods = ['PATCH'])
 @requires_access_level(['UPDATE'])
 @validate_body(user_schemas.UpdateUserBodySchema())
 def update_user(id, body):
         try:
+            
             User.query.filter_by(id=id).first_or_404()
     
             User.query.filter_by(id=id).update(body)
           
             db.session.commit()
         
-            return jsonify({"Message": "Usuário atualizado com sucesso."}), 204
+            return jsonify({"message": "User successfully updated."}), 200
 
         except IntegrityError:
-            return jsonify({"error": 'Email já existe.'}), 409
+            return jsonify({"error": "Email already exists."}), 409
         
         except Exception:
-            return jsonify({"error": 'Usuário não existe.'}), 404
+            return jsonify({"error": "User not found."}), 404
         
     
 

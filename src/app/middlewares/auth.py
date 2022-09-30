@@ -43,7 +43,7 @@ def requires_access_level(permissions):
 
             role_permissions = role_share_schema.dump(current_role)['permissions']
 
-            roles = [permission['description'] for permission in role_permissions if permission['description']  in permissions]
+            roles = [permission['description'] for permission in role_permissions if permission['description'] in permissions]
 
             if len(roles) < len(permissions):
                 return jsonify({

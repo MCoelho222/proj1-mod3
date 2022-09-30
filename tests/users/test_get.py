@@ -92,7 +92,7 @@ def test_get_all_users_per_page(client, logged_in_client):
     assert len(response.json) == 20
     
    
-def test_user_not_found(client, logged_in_client):
+def test_get_user_not_found(client, logged_in_client):
     
     headers = {
         'Content-Type': mimetype,
@@ -105,7 +105,7 @@ def test_user_not_found(client, logged_in_client):
 
     assert response.status_code == 204
 
-def test_user_pagination(client, logged_in_client):
+def test_get_user_pagination(client, logged_in_client):
 
     headers = {
         'Content-Type': mimetype,

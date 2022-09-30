@@ -44,7 +44,7 @@ class CreateUserBodySchema(Schema):
     @validates('cep')
     def validate_cep(self, cep):
         if not cep.isnumeric() or len(cep) != 8:
-            raise ValidationError('The CEP is invalid.')
+            raise ValidationError('Invalid CEP.')
 
 
 class UpdateUserBodySchema(Schema):
@@ -70,9 +70,9 @@ class UpdateUserBodySchema(Schema):
     @validates('phone')
     def validate_phone(self, phone):
         if not phone.isnumeric() and len(phone) != 8:
-            raise ValidationError('O telefone não é válido.')
+            raise ValidationError('Invalid phone number.')
 
     @validates('cep')
     def validate_cep(self, cep):
         if not cep.isnumeric() and len(cep) != 8:
-            raise ValidationError('O cep não é válido.')
+            raise ValidationError('Invalid CEP.')

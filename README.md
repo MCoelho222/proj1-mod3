@@ -206,6 +206,15 @@ pytest tests/ -v -W ignore::DeprecationWarning
 - Caso não seja encontrado nenhum resultado, irá retornar o Status 204 (No Content).
 - Caso seja encontrado ao menos um resultado, irá retornar um JSON contendo o id, name, email, phone e a role.name dos usuários, além do Status 200 (OK).
 
+#### Testes
+
+ - test_get_user_unauthorized;
+ - test_get_users_success;
+ - test_get_specific_user_success;
+ - test_get_all_users_per_page;
+ - test_get_user_not_found;
+ - test_get_user_pagination.
+
 #### Query Param (não obrigatório)
 
 `EXAMPLE: http:127.0.0.1:5000/user/1` - Para ver a página 1 que irá retornar 20 itens por página. Caso não exista a página, irá retornar erro NOT FOUND status 404.
@@ -224,24 +233,24 @@ Se não, irá dar NO CONTENT 204
 
 #### Query Param (obrigatório)
 
-`EXAMPLE: http:127.0.0.1:5000/user/5` - Para atualizar usuário com id 5, caso não exista a página irá retornar erro NOT FOUND status 404.
+`EXAMPLE: http:127.0.0.1:5000/user/update/5` - Para atualizar usuário com id 5, caso não exista a página irá retornar erro NOT FOUND status 404.
 
 #### Body parameter
 
 ```js
 {
-  city_id (obrigatório),
-  gender_id (obrigatório),
-  role_id (obrigatório),
+  city_id (opcional),
+  gender_id (opcional),
+  role_id (opcional),
   name (obrigatório),
-  age (obrigatório),
+  age (opcional),
   email (obrigatório),
-  phone (obrigatório),
+  phone (opcional),
   password (obrigatório),
-  cep (obrigatório),
-  street (obrigatório),
-  number_street (obrigatório),
-  district (obrigatório),
+  cep (opcional),
+  street (opcional),
+  number_street (opcional),
+  district (opcional),
   complement (opcional),
   landmark (opcional)
 }

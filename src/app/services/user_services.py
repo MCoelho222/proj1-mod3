@@ -35,14 +35,15 @@ def make_login(email, password):
 
     try:
         try:
-            user_query = User.query.filter_by(email = email).first_or_404()
+            user_query = User.query.filter_by(email=email).first_or_404()
         except:
-            return {"error": "Dados inválidos", "status_code": 401}
+            print('FRFRFRFRFR')
+            return {"error": "Invalid fields.", "status_code": 401}
         
         user = user_share_schema.dump(user_query)
 
         if not user_query.check_password(password):
-            return {"error": "Dados inválidos", "status_code": 401}
+            return {"error": "Invalid fields.", "status_code": 401}
 
         payload = {
             "name": user['name'],
@@ -55,7 +56,7 @@ def make_login(email, password):
 
         return {"token": token}
     except:
-        return {"error": "Ops! Algo deu errado...", "status_code": 500}
+        return {"error": "Oops! Something went wrong...", "status_code": 500}
 
 
 def get_by_id(id):
