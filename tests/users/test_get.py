@@ -65,15 +65,18 @@ def test_get_specific_user_success(client, logged_in_client):
     name = 'Luis Lopes'
     response = client.get(f"{url}?name={name}", headers=headers)
     users_list = response.json
-    check = all([name in user['name'] for user in users_list])
-    keys = ['id','name', 'email', 'phone', 'role_id']
+    print(users_list)
+    check_all_names = all([name in user['name'] for user in users_list])
+    keys = ['id','name', 'email', 'phone', 'role.name']
     check_keys = []
     for user in users_list:
         for key in keys:
-            check_keys.append()
+            check_keys.append(key in user)
+    all_keys_confirm = all(check_keys)
 
     assert response.status_code == 200
-    assert check
+    assert check_all_names
+    assert all_keys_confirm
 
 def test_get_all_users_per_page(client, logged_in_client):
 
