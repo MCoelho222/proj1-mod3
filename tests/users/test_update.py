@@ -33,7 +33,7 @@ def test_update_user_no_auth(client):
     assert response.json['error'] == "Invalid token."
     assert response.status_code == 403
 
-def test_update_user_unauthorized(client, logged_in_client):
+def test_update_user_no_permission(client, logged_in_client):
 
     headers = {
         'Content-Type': mimetype,
@@ -88,7 +88,7 @@ def test_update_user_success(client, logged_in_client):
     assert response.json["message"] == "User successfully updated."
     assert response.status_code == 200
 
-def test_update_user_success(client, logged_in_client):
+def test_update_user_not_found(client, logged_in_client):
 
     headers = {
         'Content-Type': mimetype,
@@ -102,9 +102,27 @@ def test_update_user_success(client, logged_in_client):
         "password": "123Mudar!"
     }
 
-    response = client.patch(f"{url}update/41", data=json.dumps(update_user), headers=headers)
+    response = client.patch(f"{url}update/5050505050", data=json.dumps(update_user), headers=headers)
 
     assert response.json["error"] == "User not found."
+    assert response.status_code == 404
+
+def test_update_user_qparam_not_int(client, logged_in_client):
+
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+    headers['Authorization'] = f"Bearer {logged_in_client}"
+
+    update_user = {
+        "name": "Luis Lopes",
+        "email": "luislopesssss@gmail.com",
+        "password": "123Mudar!"
+    }
+    
+    response = client.patch(f"{url}update/g", data=json.dumps(update_user), headers=headers)
+
     assert response.status_code == 404
 
 def test_update_user_email_exists(client, logged_in_client):

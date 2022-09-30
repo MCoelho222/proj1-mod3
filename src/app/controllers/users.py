@@ -52,21 +52,20 @@ def list_user_per_page():
 @requires_access_level(['UPDATE'])
 @validate_body(user_schemas.UpdateUserBodySchema())
 def update_user(id, body):
-        try:
-            
-            User.query.filter_by(id=id).first_or_404()
-    
-            User.query.filter_by(id=id).update(body)
-          
-            db.session.commit()
-        
-            return jsonify({"message": "User successfully updated."}), 200
+    try:
+        User.query.filter_by(id=id).first_or_404()
 
-        except IntegrityError:
-            return jsonify({"error": "Email already exists."}), 409
+        User.query.filter_by(id=id).update(body)
         
-        except Exception:
-            return jsonify({"error": "User not found."}), 404
+        db.session.commit()
+    
+        return jsonify({"message": "User successfully updated."}), 200
+
+    except IntegrityError:
+        return jsonify({"error": "Email already exists."}), 409
+    
+    except Exception:
+        return jsonify({"error": "User not found."}), 404
         
     
 

@@ -206,15 +206,6 @@ pytest tests/ -v -W ignore::DeprecationWarning
 - Caso não seja encontrado nenhum resultado, irá retornar o Status 204 (No Content).
 - Caso seja encontrado ao menos um resultado, irá retornar um JSON contendo o id, name, email, phone e a role.name dos usuários, além do Status 200 (OK).
 
-#### Testes
-
- - test_get_user_unauthorized;
- - test_get_users_success;
- - test_get_specific_user_success;
- - test_get_all_users_per_page;
- - test_get_user_not_found;
- - test_get_user_pagination.
-
 #### Query Param (não obrigatório)
 
 `EXAMPLE: http:127.0.0.1:5000/user/1` - Para ver a página 1 que irá retornar 20 itens por página. Caso não exista a página, irá retornar erro NOT FOUND status 404.
@@ -223,6 +214,15 @@ pytest tests/ -v -W ignore::DeprecationWarning
 Se não, irá dar NO CONTENT 204
 
 `EXAMPLE: http:127.0.0.1:5000/user` - Irá te levar para a página 1 caso você não envie parametro de página e mostrará uma lista de até 20 usuários.
+
+#### Testes
+
+ - test_get_user_unauthorized;
+ - test_get_users_success;
+ - test_get_specific_user_success;
+ - test_get_all_users_per_page;
+ - test_get_user_not_found;
+ - test_get_user_pagination.
 
 ### Regras ENDPOINT 6:
 
@@ -255,6 +255,15 @@ Se não, irá dar NO CONTENT 204
   landmark (opcional)
 }
 ```
+#### Testes
+
+- test_update_user_no_auth;
+- test_update_user_no_permission;
+- test_update_user_success;
+- test_update_user_not_found;
+- test_update_user_qparam_not_int;
+- test_update_user_email_exists;
+- test_update_user_invalid_field.
 
 ### Regras ENDPOINT 7:
 
