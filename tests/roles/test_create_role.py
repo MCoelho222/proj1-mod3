@@ -87,7 +87,7 @@ def test_create_role_missing_field(client, logged_in_client):
     }
     response = client.post(url, data=json.dumps(data), headers=headers)
 
-    assert response.json['permissions'] == "The field permissions is required."
+    assert response.json['permissions'] == ["The field permissions is required."]
     assert response.status_code == 400
 
 
@@ -123,7 +123,7 @@ def test_create_role_permissions_not_list(client, logged_in_client):
     }
     response = client.post(url, data=json.dumps(data), headers=headers)
 
-    assert response.json['error'] == "Field permissions must be a list."
+    assert response.json['permissions'] == ["Invalid permissions."]
     assert response.status_code == 400
 
 
@@ -141,5 +141,5 @@ def test_create_role_invalid_field(client, logged_in_client):
     }
     response = client.post(url, data=json.dumps(data), headers=headers)
 
-    assert response.json['name'] == "Field name cannot be empty."
+    assert response.json['name'] == ["The field name cannot be empty."]
     assert response.status_code == 400
