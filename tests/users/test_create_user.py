@@ -3,7 +3,27 @@ from flask import json
 mimetype = 'application/json'
 url = "/user/create"
 
-def test_create_user_unauthorized(client, logged_in_client):
+
+def test_create_user_no_auth(client):
+
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+    headers['Authorization'] = f"Bearer {''}"
+    data = {
+        "role_id": 2,
+        "name": "Marcelo Coelho",
+        "email": "mcoelho2011@hotmail.com",
+        "password": "mc5447#@T"
+    }
+    response = client.post(url, data=json.dumps(data), headers=headers)
+
+    assert response.json['error'] == "Invalid token."
+    assert response.status_code == 403
+
+
+def test_create_user_no_permission(client, logged_in_client):
 
     headers = {
         'Content-Type': mimetype,
