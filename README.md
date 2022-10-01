@@ -311,6 +311,16 @@ Se não, irá dar NO CONTENT 204
 - id: integer (Path param required)
 - quaisquer campos (Body param não required)
 
+#### Testes
+
+- test_update_item_no_auth;
+- test_update_item_success;
+- test_update_item_no_permission;
+- test_update_item_invalid_field;
+- test_update_item_missing_field;
+- test_update_item_forbidden_fields.
+
+
 ### Regras ENDPOINT 9:
 
 - O usuário deve estar logado e possuir autorização READ para este endpoint de usuário. Caso não possua, retornará o Status de Erro 403 (Forbidden).

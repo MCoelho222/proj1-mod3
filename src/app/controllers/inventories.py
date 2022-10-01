@@ -83,12 +83,11 @@ def get_inventories():
 @requires_access_level(['UPDATE'])
 @validate_body(UpdateProductBodySchema())
 def update_item(id, body):
-
     try:
         Inventory.query.filter_by(id=id).first_or_404()
 
         Inventory.query.filter_by(id=id).update(body)
         db.session.commit()
-        return jsonify({"Message": "Item atualizado com sucesso."}), 204
+        return jsonify({"message": "Item successfully updated."}), 204
     except:
-        return jsonify({"error": 'Item não encontrado.'}), 404
+        return jsonify({"error": 'Item not found.'}), 404

@@ -48,3 +48,29 @@ class UpdateProductBodySchema(Schema):
             data['user_id'] = None
             return data
         return data
+
+    @validates('value')
+    def validate_value(self, value):
+        if value <= 0.:
+            raise ValidationError('Value must be higher than zero.')
+    
+    @validates('brand')
+    def validate_brand(self, brand):
+        if len(brand) == 0:
+            raise ValidationError('Brand field cannot be empty.')
+    
+    @validates('template')
+    def validate_template(self, template):
+        if len(template) == 0:
+            raise ValidationError('Template field cannot be empty.')
+    
+    @validates('description')
+    def validate_description(self, description):
+        if len(description) == 0:
+            raise ValidationError('Description field cannot be empty.')
+    
+    @validates('title')
+    def validate_title(self, title):
+        if len(title) == 0:
+            raise ValidationError('Title field cannot be empty.')
+    
