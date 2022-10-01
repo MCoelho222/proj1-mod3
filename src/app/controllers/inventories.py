@@ -17,25 +17,54 @@ inventory = Blueprint('inventory', __name__, url_prefix='/inventory')
 @requires_access_level(["READ"])
 def list_all_requirements():
 
-    users_db_data = queries(model='user', type_request='all')
-    inventory_db_data = queries(model='inventory', type_request='all', schema='inventories')
+    try:
+        users_db_data = queries(model='user', type_request='all')
+        inventory_db_data = queries(model='inventory', type_request='all', schema='inventories')
+        total_items_price = 0
+        total_items_loaned = 0
+        if users_db_data and inventory_db_data:
+            for item in inventory_db_data:
+                if item['user_id'] != None:
+                    total_items_loaned += 1
+                if item['value'] > 0 and item['value'] != None:
+                    total_items_price += item['value']
 
-    total_items_price = 0
-    total_items_loaned = 0
-    for item in inventory_db_data:
-        if item['user_id'] != None:
-            total_items_loaned += 1
-        if item['value'] > 0 and item['value'] != None:
-            total_items_price += item['value']
+            return_dados = {
+                'total_items': len(inventory_db_data),
+                'total_users': len(users_db_data),
+                'total_items_loaned': total_items_loaned,
+                'total_items_price': round(total_items_price, 2)
+                }
 
-    return_dados = {
-        'total_items': len(inventory_db_data),
-        'total_users': len(users_db_data),
-        'total_items_loaned': total_items_loaned,
-        'total_items_price': round(total_items_price, 2)
-        }
+        if not users_db_data and inventory_db_data:
 
-    return jsonify(return_dados), 200
+            total_items_price = 0
+            total_items_loaned = 0
+            for item in inventory_db_data:
+                if item['user_id'] != None:
+                    total_items_loaned += 1
+                if item['value'] > 0 and item['value'] != None:
+                    total_items_price += item['value']
+
+            return_dados = {
+                'total_items': len(inventory_db_data),
+                'total_users': 0,
+                'total_items_loaned': total_items_loaned,
+                'total_items_price': round(total_items_price, 2)
+                }
+        
+        if users_db_data and not inventory_db_data:
+
+            return_dados = {
+                'total_items': 0,
+                'total_users': len(users_db_data),
+                'total_items_loaned': total_items_loaned,
+                'total_items_price': round(total_items_price, 2)
+                }
+
+        return jsonify(return_dados), 200
+    except:
+        return jsonify({'error': "Oops! Something went wrong..."}), 400
 
 
 @inventory.route("/create", methods= ["POST"])

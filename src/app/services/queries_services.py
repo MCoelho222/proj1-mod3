@@ -31,8 +31,11 @@ def queries(model, type_request, schema=None, filter_param=None):
     if type_request == 'all':
         query_db_data = options_models[model].query.all()
     if schema:
-        dict_query = options_schema[schema].dump(query_db_data)
-        return dict_query
+        try:
+            dict_query = options_schema[schema].dump(query_db_data)
+            return dict_query
+        except:
+            return None
     return query_db_data
 
 
