@@ -117,7 +117,7 @@ poetry run flask populate_db
 ```
 `OBS`: Caso precise, pode utilizar o comando **_poetry run flask drop_all_tables_** para retirar todas as tabelas do banco e recomeçar novamente (não sendo necessário o comando 'poetry run flask db init').
 
-## Testes
+## Testes Unitários
 
 - No arquivo *.env* definir a variável de ambiente FLASK_ENV:
 
