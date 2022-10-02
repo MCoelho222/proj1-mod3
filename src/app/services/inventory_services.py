@@ -1,4 +1,4 @@
-from src.app.models.inventory import Inventory, inventories_share_schema
+from src.app.models.inventory import Inventory, inventories_share_schema, inventory_share_schema
 from src.app.services import user_services
 
 
@@ -44,6 +44,17 @@ def get_inventories_by_name(name, page=None):
     inventories = inventories_share_schema.dump(result.items)
         
     return format_result(inventories) if result else None
+
+
+def get_inventories_by_id(id):
+    result = Inventory.query.filter_by(id=id).first()
+    inventory = inventory_share_schema.dump(result)
+    
+    try:
+        inventory['user_id'] = generate_user_data(inventory['user_id'])
+    except KeyError:
+        pass
+    return inventory if result else None
 
     
 def get_all_inventories(page=None):

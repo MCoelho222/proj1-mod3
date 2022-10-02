@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request
 from src.app import db
 from src.app.models.inventory import Inventory
 from src.app.middlewares.auth import requires_access_level
-from src.app.services.inventory_services import create_product, get_all_inventories, get_inventories_by_name
+from src.app.services.inventory_services import create_product, get_all_inventories, get_inventories_by_name, get_inventories_by_id
 from src.app.utils import exist_product_code
 from src.app.services.queries_services import queries
 from src.app.schemas.product_schema import ProductBodySchema, UpdateProductBodySchema
@@ -108,7 +108,19 @@ def get_inventories():
     return jsonify(all_inventories), 200
 
 
-@inventory.route("/<int:id>", methods = ["PATCH"])
+@inventory.route('/item/<int:id>', methods=['GET'])
+@requires_access_level(["READ"])
+def get_inventory_by_id(id):
+    
+    inventories_by_id = get_inventories_by_id(id)
+    
+    if not inventories_by_id:
+        return jsonify({"error": "Item not found."}), 404
+
+    return jsonify(inventories_by_id), 200
+
+
+@inventory.route("/update/<int:id>", methods = ["PATCH"])
 @requires_access_level(['UPDATE'])
 @validate_body(UpdateProductBodySchema())
 def update_item(id, body):

@@ -7,7 +7,7 @@ cod = str(round(time.time() * 1000))
 cod_split = cod[7:]
 
 mimetype = 'application/json'
-url = "/inventory/"
+url = "/inventory/update/"
 
 
 def test_update_item_no_auth(client, logged_in_client):
