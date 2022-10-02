@@ -318,7 +318,7 @@ Se não, irá dar NO CONTENT 204
 - test_create_item_no_permission;
 - test_create_item_missing_field;
 - test_create_item_invalid_field;
-- test_create_item_short_prod_code;
+- test_create_item_too_long_prod_code;
 - test_create_item_negative_prod_code;
 - test_create_item_prod_code_exists.
 
