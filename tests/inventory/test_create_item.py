@@ -9,6 +9,10 @@ url = "/inventory/"
 
 
 def test_create_item_no_auth(client):
+    """
+    1. POST with invalid token;
+    2. Check error messages and status 403.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -31,6 +35,13 @@ def test_create_item_no_auth(client):
 
 
 def test_create_item_no_permission(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new user without permission;
+    3. Login user without permission;
+    4. POST new item;
+    5. Check error message and status 403.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -67,6 +78,11 @@ def test_create_item_no_permission(client, logged_in_client):
 
 
 def test_create_item_success(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. Check message and status 201.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -89,6 +105,11 @@ def test_create_item_success(client, logged_in_client):
 
 
 def test_create_item_missing_field(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item with missing field product_code;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -110,6 +131,11 @@ def test_create_item_missing_field(client, logged_in_client):
 
 
 def test_create_item_invalid_field(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item with invalid field product_code - not int;
+    3. Check error messages and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -133,7 +159,12 @@ def test_create_item_invalid_field(client, logged_in_client):
     assert response.status_code == 400
 
 
-def test_create_item_short_prod_code(client, logged_in_client):
+def test_create_item_too_long_prod_code(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item with invalid field product_code - too long;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -156,6 +187,11 @@ def test_create_item_short_prod_code(client, logged_in_client):
 
 
 def test_create_item_negative_prod_code(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item with invalid field value - negative;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -178,6 +214,12 @@ def test_create_item_negative_prod_code(client, logged_in_client):
 
 
 def test_create_item_prod_code_exists(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. POST new item with the same product_code;
+    4. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,

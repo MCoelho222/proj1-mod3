@@ -189,13 +189,35 @@ pytest tests/ -v -W ignore::DeprecationWarning
 - O telefone deve conter 11 dígitos e não pode conter nenhuma letra ou caracter especial.
 - Ao criar o usuário, deve-se retornar o Status 201 (Created)
 
-#### Testes
+### Body parameters
 
- - test_create_user_unauthorized;
- - test_create_user_missing_field;
- - test_create_user_email_exists;
- - test_create_user_invalid_field;
- - test_create_user_success.
+```js
+{
+  city_id (opcional),
+  gender_id (opcional),
+  role_id (opcional),
+  name (obrigatório),
+  age (opcional),
+  email (obrigatório),
+  phone (opcional),
+  password (obrigatório),
+  cep (opcional),
+  street (opcional),
+  number_street (opcional),
+  district (opcional),
+  complement (opcional),
+  landmark (opcional)
+}
+```
+
+#### Testes Unitários
+
+- test_create_user_no_auth;
+- test_create_user_no_permission;
+- test_create_user_success;
+- test_create_user_missing_field;
+- test_create_user_invalid_field;
+- test_create_user_email_exists.
 
 ### Regras ENDPOINT 5:
 
@@ -215,14 +237,15 @@ Se não, irá dar NO CONTENT 204
 
 `EXAMPLE: http:127.0.0.1:5000/user` - Irá te levar para a página 1 caso você não envie parametro de página e mostrará uma lista de até 20 usuários.
 
-#### Testes
+#### Testes Unitários
 
- - test_get_user_unauthorized;
- - test_get_users_success;
- - test_get_specific_user_success;
- - test_get_all_users_per_page;
- - test_get_user_not_found;
- - test_get_user_pagination.
+- test_get_user_no_auth;
+- test_get_user_no_permission;
+- test_get_users_success;
+- test_get_specific_user_success;
+- test_get_all_users_per_page;
+- test_get_user_not_found;
+- test_get_user_pagination.
 
 ### Regras ENDPOINT 6:
 
@@ -255,7 +278,7 @@ Se não, irá dar NO CONTENT 204
   landmark (opcional)
 }
 ```
-#### Testes
+#### Testes Unitários
 
 - test_update_user_no_auth;
 - test_update_user_no_permission;
@@ -288,7 +311,7 @@ Se não, irá dar NO CONTENT 204
 }
 ```
 
-#### Testes
+#### Testes Unitários
 
 - test_create_item_no_auth;
 - test_create_item_success;
@@ -311,7 +334,7 @@ Se não, irá dar NO CONTENT 204
 - id: integer (Path param required)
 - quaisquer campos (Body param não required)
 
-#### Testes
+#### Testes Unitários
 
 - test_update_item_no_auth;
 - test_update_item_success;
@@ -334,6 +357,16 @@ Se não, irá dar NO CONTENT 204
 #### Entrada:
 name: string (Query param não obrigatório)
 
+#### Testes Unitários
+
+- test_get_item_no_auth;
+- test_get_items_no_permission;
+- test_get_items_success;
+- test_get_specific_item_success;
+- test_get_all_items_per_page;
+- test_get_item_not_found;
+- test_get_item_pagination.
+
 ### Regras ENDPOINT 10
 
 - O usuário deve estar logado e possuir autorização READ para este endpoint de inventário. Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
@@ -342,6 +375,57 @@ name: string (Query param não obrigatório)
 - Retorna o total da soma de todos os valores dos itens.
 - Retorna quantos itens estão emprestados para usuários.
 - Retorna as estatísticas, além do Status 200 (OK).
+
+#### Testes Unitários
+
+- test_get_item_results_no_auth;
+- test_get_item_results_no_permission;
+- test_get_item_results_success;
+- test_get_item_results_empty_db.
+
+### Regras ENDPOINT 11
+
+- O usuário deve estar logado e possuir autorização  (READ, WRITE, UPDATE e DELETE) para este endpoint de inventário. Caso não possua, deve-se retornar o Status de Erro 403 (Forbidden).
+- Validar se o cargo que está sendo criado já existe, e se existir, retornar um erro 400, informando que o cargo já existe
+- Validar que as permissões enviadas existam.
+- Se as permissões não existirem, retornar um erro 400 informando que as permissões são inválidas.
+- Retornar a mensagem informando que o cargo foi criado com sucesso, utilizando o Status 201 (OK).
+
+#### Body parameter
+
+```js
+    {
+    description (string - obrigatório), 
+    permissions (array de ids - obrigatório)
+    }
+```
+
+#### Testes Unitários
+
+- test_create_role_no_auth;
+- test_create_role_no_permission;
+- test_create_role_success;
+- test_create_role_missing_field;
+- test_create_role_invalid_permission;
+- test_create_role_permissions_not_list;
+- test_create_role_invalid_field.
+
+### Regras ENDPOINT 12
+
+- O usuário deve estar logado e possuir autorização READ para este endpoint de inventário. Caso não possua, deve-se retornar o Status de Erro 403 (Forbidden).
+- Se o id informado não existir, retorna um 404 informando que o valor não existe.
+- Retornar o produto específico com os campos da tabela em si junto com seus relacionamentos, retornando status 200.
+
+#### Entrada
+
+**id**: integer (path param required)
+
+#### Testes Unitários
+
+- test_get_item_by_id_no_auth;
+- test_get_items_by_id_no_permission;
+- test_get_item_by_id_success;
+- test_get_item_by_id_not_found.
 
 ## Tecnologias utilizadas
 

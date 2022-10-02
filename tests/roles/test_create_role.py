@@ -5,6 +5,10 @@ url = "/role/create"
 
 
 def test_create_role_no_auth(client):
+    """
+    1. POST with invalid token;
+    2. Check error messages and status 403.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -24,6 +28,13 @@ def test_create_role_no_auth(client):
 
 
 def test_create_role_no_permission(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new user without permission;
+    3. Login user without permission;
+    4. POST new role;
+    5. Check error message and status 403.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -57,6 +68,11 @@ def test_create_role_no_permission(client, logged_in_client):
 
 
 def test_create_role_success(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new role;
+    3. Check message and status 201.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -75,6 +91,11 @@ def test_create_role_success(client, logged_in_client):
 
 
 def test_create_role_missing_field(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new role with missing field permissions;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -92,6 +113,11 @@ def test_create_role_missing_field(client, logged_in_client):
 
 
 def test_create_role_invalid_permission(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new role with invalid permission;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -110,6 +136,11 @@ def test_create_role_invalid_permission(client, logged_in_client):
 
 
 def test_create_role_permissions_not_list(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new role with int permission, not in a list;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -128,6 +159,11 @@ def test_create_role_permissions_not_list(client, logged_in_client):
 
 
 def test_create_role_invalid_field(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new role with invalid name;
+    3. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,

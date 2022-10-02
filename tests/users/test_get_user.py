@@ -6,6 +6,10 @@ mimetype = 'application/json'
 url = "/user/"
 
 def test_get_user_no_auth(client):
+    """
+    1. GET with invalid token;
+    2. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -19,28 +23,30 @@ def test_get_user_no_auth(client):
 
 
 def test_get_user_no_permission(client, logged_in_client):
+    """
+    1. Create user without role_id (no permission);
+    2. Login;
+    3. Try GET users;
+    4. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype
     }
     headers['Authorization'] = f"Bearer {logged_in_client}"
-
     data = {
         "name": "Marcelo Coelho",
         "email": "mcoelho2011@hotmail.com",
         "password": "mc5447#@T"
     }
-   
     response = client.post('/user/create', data=json.dumps(data), headers=headers)
-
+    
     user = {
         "email": "mcoelho2011@hotmail.com",
         "password": "mc5447#@T"
     }
-
     login_response = client.post('/user/login', data=json.dumps(user), headers=headers)
-
     token = login_response.json['token']
     headers['Authorization'] = f"Bearer {token}"
 
@@ -51,6 +57,12 @@ def test_get_user_no_permission(client, logged_in_client):
 
 
 def test_get_users_success(client, logged_in_client):
+    """
+    1. Login;
+    2. GET with query param name;
+    3. Check if name is in all user names;
+    4. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -67,6 +79,13 @@ def test_get_users_success(client, logged_in_client):
     assert check
 
 def test_get_specific_user_success(client, logged_in_client):
+    """
+    1. Login;
+    2. GET user by name;
+    3. Check if name is in all user names;
+    4. Check if response has all required keys;
+    5. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -77,7 +96,6 @@ def test_get_specific_user_success(client, logged_in_client):
     name = 'Luis Lopes'
     response = client.get(f"{url}?name={name}", headers=headers)
     users_list = response.json
-    print(users_list)
     check_all_names = all([name in user['name'] for user in users_list])
     keys = ['id','name', 'email', 'phone', 'role.name']
     check_keys = []
@@ -91,13 +109,19 @@ def test_get_specific_user_success(client, logged_in_client):
     assert all_keys_confirm
 
 def test_get_all_users_per_page(client, logged_in_client):
+    """
+    1. Login;
+    2. GET users;
+    3. Check if response has 1 page with less than 20 users;
+    4. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype
     }
     headers['Authorization'] = f"Bearer {logged_in_client}"
-
+    
     response = client.get(url, headers=headers)
 
     assert response.status_code == 200
@@ -105,19 +129,29 @@ def test_get_all_users_per_page(client, logged_in_client):
     
    
 def test_get_user_not_found(client, logged_in_client):
+    """
+    1. Login;
+    2. GET user with impossible query param;
+    3. Check status 204.
+    """
     
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype
     }
-
     headers['Authorization'] = f"Bearer {logged_in_client}"
 
-    response = client.get(f"{url}?name=4567", headers=headers)
+    response = client.get(f"{url}?name=4567698", headers=headers)
 
     assert response.status_code == 204
 
 def test_get_user_pagination(client, logged_in_client):
+    """
+    1. Login;
+    2. GET users;
+    3. GET last possible page;
+    4. Check if response length is greater than zero.
+    """
 
     headers = {
         'Content-Type': mimetype,

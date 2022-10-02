@@ -8,6 +8,10 @@ url = "/inventory/"
 
 
 def test_get_item_results_no_auth(client):
+    """
+    1. GET item results with invalid token;
+    2. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -22,6 +26,12 @@ def test_get_item_results_no_auth(client):
     assert response.status_code == 403
 
 def test_get_item_results_no_permission(client, logged_in_client):
+    """
+    1. POST user without role_id (no permission);
+    2. Login;
+    3. Try GET item results;
+    4. Check status 403 and error message.
+    """
     
     headers = {
         'Content-Type': mimetype,
@@ -48,6 +58,12 @@ def test_get_item_results_no_permission(client, logged_in_client):
     assert response.status_code == 403
 
 def test_get_item_results_success(client, logged_in_client):
+    """
+    1. Login;
+    2. GET item results;
+    3. Check if response is the same as from database directly;
+    4. Check status 200.
+    """
     
     headers = {
         'Content-Type': mimetype,
@@ -83,6 +99,13 @@ def test_get_item_results_success(client, logged_in_client):
 
 
 def test_get_item_results_empty_db(client, logged_in_client):
+    """
+    1. Login;
+    2. GET item results;
+    3. Check if all calculations are zero;
+    4. Check status 200.
+    """
+
     
     headers = {
         'Content-Type': mimetype,

@@ -11,6 +11,12 @@ url = "/inventory/update/"
 
 
 def test_update_item_no_auth(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. PATCH with item id and data with invalid token;
+    2. Check error message and status 403.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -50,6 +56,13 @@ def test_update_item_no_auth(client, logged_in_client):
 
 
 def test_update_item_no_permission(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new user without permission;
+    3. Login user without permission;
+    4. Try PATCH item data;
+    5. Check error message and status 403.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -99,6 +112,12 @@ def test_update_item_no_permission(client, logged_in_client):
     assert response.status_code == 403
 
 def test_update_item_success(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. PATCH altered item with item id and data;
+    4. Check status 204.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -130,6 +149,12 @@ def test_update_item_success(client, logged_in_client):
 
 
 def test_update_item_invalid_field(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. PATCH altered item with item id and data with invalid fields;
+    4. Check error message and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -166,6 +191,12 @@ def test_update_item_invalid_field(client, logged_in_client):
 
 
 def test_update_item_missing_field(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. PATCH altered item with item id and data with missing fields;
+    4. Check error message and status 204.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -197,6 +228,12 @@ def test_update_item_missing_field(client, logged_in_client):
 
 
 def test_update_item_forbidden_fields(client, logged_in_client):
+    """
+    1. Login;
+    2. POST new item;
+    3. PATCH altered item with item id and data with forbidden fields - product_code, product_category_id;
+    4. Check error messages and status 400.
+    """
 
     headers = {
         'Content-Type': mimetype,

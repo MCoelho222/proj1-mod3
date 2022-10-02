@@ -8,6 +8,10 @@ url = "/inventory/item/"
 
 
 def test_get_item_by_id_no_auth(client):
+    """
+    1. GET item with invalid token;
+    2. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -21,6 +25,12 @@ def test_get_item_by_id_no_auth(client):
 
 
 def test_get_items_by_id_no_permission(client, logged_in_client):
+    """
+    1. POST user without role_id (no permission);
+    2. Login;
+    3. Try GET item;
+    4. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -51,6 +61,12 @@ def test_get_items_by_id_no_permission(client, logged_in_client):
 
 
 def test_get_item_by_id_success(client, logged_in_client):
+    """
+    1. Login;
+    2. GET item;
+    3. Check if response has all required keys;
+    4. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -86,7 +102,12 @@ def test_get_item_by_id_success(client, logged_in_client):
    
 
 def test_get_item_by_id_not_found(client, logged_in_client):
-    
+    """
+    1. Login;
+    2. GET item with impossible query param;
+    3. Check error message and status 204.
+    """
+
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype

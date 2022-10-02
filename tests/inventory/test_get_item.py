@@ -11,6 +11,10 @@ url = "/inventory/"
 
 
 def test_get_item_no_auth(client):
+    """
+    1. GET item with invalid token;
+    2. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -24,6 +28,12 @@ def test_get_item_no_auth(client):
 
 
 def test_get_items_no_permission(client, logged_in_client):
+    """
+    1. POST user without role_id (no permission);
+    2. Login;
+    3. Try GET items;
+    4. Check status 403 and error message.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -54,6 +64,12 @@ def test_get_items_no_permission(client, logged_in_client):
 
 
 def test_get_items_success(client, logged_in_client):
+    """
+    1. Login;
+    2. GET items;
+    3. Check if the length of response is the same as the database;
+    4. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -68,6 +84,13 @@ def test_get_items_success(client, logged_in_client):
     
 
 def test_get_specific_item_success(client, logged_in_client):
+    """
+    1. Login;
+    2. GET item by name;
+    3. Check if name is in all item titles;
+    4. Check if response has all required keys;
+    5. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -90,6 +113,12 @@ def test_get_specific_item_success(client, logged_in_client):
     assert response.status_code == 200
 
 def test_get_all_items_per_page(client, logged_in_client):
+    """
+    1. Login;
+    2. GET items;
+    3. Check if response has 1 page with less than, or 20 items;
+    4. Check status 200.
+    """
 
     headers = {
         'Content-Type': mimetype,
@@ -103,24 +132,34 @@ def test_get_all_items_per_page(client, logged_in_client):
     
    
 def test_get_item_not_found(client, logged_in_client):
+    """
+    1. Login;
+    2. GET item with impossible query param;
+    3. Check status 204.
+    """
     
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype
     }
     headers['Authorization'] = f"Bearer {logged_in_client}"
-    response = client.get(f"{url}?name=4567", headers=headers)
+    response = client.get(f"{url}?name=4567899", headers=headers)
     
     assert response.status_code == 204
 
 
 def test_get_item_pagination(client, logged_in_client):
+    """
+    1. Login;
+    2. GET items;
+    3. GET the last possible page;
+    4. Check if response length is greater than zero.
+    """
 
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype
     }
-
     headers['Authorization'] = f"Bearer {logged_in_client}"
 
     response1 = client.get(f"{url}", headers=headers)
